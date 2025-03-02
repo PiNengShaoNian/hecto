@@ -1,3 +1,5 @@
+mod editor;
+
 use std::io::{self, stdout};
 use termion::event::Key;
 use termion::input::TermRead;
