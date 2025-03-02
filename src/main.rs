@@ -7,6 +7,10 @@ fn to_ctrl_byte(c: char) -> u8 {
     byte & 0b0001_1111
 }
 
+fn die(e: std::io::Error) {
+    panic!(e);
+}
+
 fn main() {
     enable_raw_mode().unwrap();
     for b in io::stdin().bytes() {
