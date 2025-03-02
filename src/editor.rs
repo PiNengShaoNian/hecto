@@ -29,7 +29,7 @@ impl Editor {
     }
 
     fn refresh_screen(&self) -> Result<(), std::io::Error> {
-        print!("\x1b[2J");
+        print!("{}{}", termion::clear::All, termion::cursor::Goto(1, 1));
         io::stdout().flush()
     }
 
