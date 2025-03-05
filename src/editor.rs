@@ -1,4 +1,4 @@
-use crate::Terminal;
+use crate::{document::Document, Terminal};
 use termion::event::Key;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -12,6 +12,7 @@ pub struct Editor {
     should_quit: bool,
     terminal: Terminal,
     cursor_position: Position,
+    document: Document,
 }
 
 impl Editor {
@@ -33,6 +34,7 @@ impl Editor {
         Editor {
             should_quit: false,
             terminal: Terminal::default().expect("Failed to initialize terminal"),
+            document: Document::default(),
             cursor_position: Position { x: 0, y: 0 },
         }
     }
