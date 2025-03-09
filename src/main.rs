@@ -10,6 +10,7 @@
 use editor::Editor;
 mod document;
 mod editor;
+mod highlighting;
 mod row;
 mod terminal;
 pub use editor::Position;
