@@ -153,6 +153,7 @@ impl Editor {
                     } else if moved {
                         editor.move_cursor(Key::Left);
                     }
+                    editor.document.highlight(Some(query));
                 },
             )
             .unwrap_or(None);
