@@ -10,6 +10,7 @@
 use editor::Editor;
 mod document;
 mod editor;
+mod filetype;
 mod highlighting;
 mod row;
 mod terminal;

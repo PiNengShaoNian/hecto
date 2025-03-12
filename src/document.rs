@@ -1,4 +1,4 @@
-use crate::{Position, Row, SearchDirection};
+use crate::{filetype::FileType, Position, Row, SearchDirection};
 use std::{
     fs,
     io::{Error, Write},
@@ -9,6 +9,7 @@ pub struct Document {
     rows: Vec<Row>,
     pub file_name: Option<String>,
     dirty: bool,
+    file_type: FileType,
 }
 
 impl Document {
@@ -24,6 +25,7 @@ impl Document {
             rows,
             file_name: Some(filename.to_string()),
             dirty: false,
+            file_type: FileType::default(),
         })
     }
 
