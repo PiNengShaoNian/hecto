@@ -344,7 +344,8 @@ impl Editor {
         );
 
         let line_indicator = format!(
-            "{}/{}",
+            "{} | {}/{}",
+            self.document.file_type(),
             self.cursor_position.y.saturating_add(1),
             self.document.len()
         );
