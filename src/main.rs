@@ -16,6 +16,7 @@ mod row;
 mod terminal;
 pub use editor::Position;
 pub use editor::SearchDirection;
+pub use filetype::HighlightingOptions;
 pub use row::Row;
 pub use terminal::Terminal;
 

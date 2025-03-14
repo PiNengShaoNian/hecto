@@ -15,17 +15,18 @@ pub struct Document {
 impl Document {
     pub fn open(filename: &str) -> Result<Self, std::io::Error> {
         let contents = fs::read_to_string(filename)?;
+        let file_type = FileType::from(filename);
         let mut rows = Vec::new();
         for value in contents.lines() {
             let mut row = Row::from(value);
-            row.highlight(None);
+            row.highlight(file_type.highlighting_options(), None);
             rows.push(row);
         }
         Ok(Self {
             rows,
             file_name: Some(filename.to_string()),
             dirty: false,
-            file_type: FileType::from(filename),
+            file_type,
         })
     }
 
@@ -55,8 +56,8 @@ impl Document {
         }
         let current_row = &mut self.rows[at.y];
         let mut new_row = current_row.split(at.x);
-        current_row.highlight(None);
-        new_row.highlight(None);
+        current_row.highlight(self.file_type.highlighting_options(), None);
+        new_row.highlight(self.file_type.highlighting_options(), None);
         self.rows.insert(at.y + 1, new_row);
     }
 
@@ -72,12 +73,12 @@ impl Document {
         if at.y == self.len() {
             let mut row = Row::default();
             row.insert(0, c);
-            row.highlight(None);
+            row.highlight(self.file_type.highlighting_options(), None);
             self.rows.push(row);
         } else {
             let row = self.rows.get_mut(at.y).unwrap();
             row.insert(at.x, c);
-            row.highlight(None);
+            row.highlight(self.file_type.highlighting_options(), None);
         }
     }
 
@@ -91,11 +92,11 @@ impl Document {
             let next_row = self.rows.remove(at.y + 1);
             let row = self.rows.get_mut(at.y).unwrap();
             row.append(&next_row);
-            row.highlight(None);
+            row.highlight(self.file_type.highlighting_options(), None);
         } else {
             let row = self.rows.get_mut(at.y).unwrap();
             row.delete(at.x);
-            row.highlight(None);
+            row.highlight(self.file_type.highlighting_options(), None);
         }
     }
 
@@ -154,7 +155,7 @@ impl Document {
 
     pub fn highlight(&mut self, word: Option<&str>) {
         for row in &mut self.rows {
-            row.highlight(word);
+            row.highlight(self.file_type.highlighting_options(), word);
         }
     }
 }
