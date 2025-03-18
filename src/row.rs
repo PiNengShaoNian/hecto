@@ -223,7 +223,21 @@ impl Row {
         opts: &HighlightingOptions,
         chars: &[char],
     ) -> bool {
+        if *index > 0 {
+            let prev_char = chars[*index - 1];
+            if !is_separator(prev_char) {
+                return false;
+            }
+        }
+
         for word in opts.primary_keywords() {
+            if *index < chars.len().saturating_sub(word.len()) {
+                let next_char = chars[*index + word.len()];
+                if !is_separator(next_char) {
+                    continue;
+                }
+            }
+
             if self.highlight_str(index, &word, chars, highlighting::Type::PrimaryKeywords) {
                 return true;
             }
@@ -355,4 +369,8 @@ impl Row {
         }
         self.highlight_match(word);
     }
+}
+
+fn is_separator(c: char) -> bool {
+    c.is_ascii_punctuation() || c.is_ascii_whitespace()
 }
