@@ -72,6 +72,14 @@ impl Document {
             let row = self.rows.get_mut(at.y).unwrap();
             row.insert(at.x, c);
         }
+        self.unhighlight_rows(at.y);
+    }
+
+    fn unhighlight_rows(&mut self, start: usize) {
+        let start = start.saturating_sub(1);
+        for row in self.rows.iter_mut().skip(start) {
+            row.is_highlighted = false;
+        }
     }
 
     pub fn delete(&mut self, at: &Position) {
@@ -88,6 +96,7 @@ impl Document {
             let row = self.rows.get_mut(at.y).unwrap();
             row.delete(at.x);
         }
+        self.unhighlight_rows(at.y);
     }
 
     pub fn save(&mut self) -> Result<(), Error> {
